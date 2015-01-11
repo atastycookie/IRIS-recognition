@@ -11,25 +11,23 @@ scales = 1;
 messaggio='Insert the number of class: each class determins a person. The ID number is a progressive, integer number. Each class should include a number of images for each person.';
 
 while chos~=possibility,
-    chos=menu('Iris Recognition System','Select image','Add selected image to database','Database Info','Iris Recognition','Delete Database','Program info',...
+    chos=menu('Iris Recognition System','Open Camera','Take Photo to database','Database Info','Iris Recognition','Delete Database','Program info',...
         'Source code for Iris Recognition System','Exit');
     %----------------
     if chos==1,
         clc;
-        [namefile,pathname]=uigetfile('*.*','Select image');
-        if namefile~=0
-            [img,map]=imread(strcat(pathname,namefile));
-            imshow(img);
-            dimensioni = size(img);
-        else
-            warndlg('Input image must be selected.',' Warning ')
-        end
-        disp('An image has just been selected. Now you can add it to database (click on "Add selected image to database")');
-        disp('or perform iris recognition (click on "Iris Recognition")');
+        
+        cam=webcam(1);
+        preview(cam);
+        
     end
     %----------------
     if chos==2,
         clc;
+        
+        img=rgb2gray(snapshot(cam));
+        delete(cam);
+        
         if exist('img')
             if (exist('iris_database.dat')==2)
                 load('iris_database.dat','-mat');
