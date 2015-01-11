@@ -133,6 +133,11 @@ while chos~=possibility,
                         disp(messaggio2);
                         messaggio2 = sprintf('%s','Iris ID: ',num2str(class_number));
                         disp(messaggio2);
+                        disp(data);
+                        disp(face_number);
+                        disp(max_class);
+                        disp(features_data);
+                        disp(features_size);
                     end
                 else
                     warndlg(sprintf('%s','Class number must be a positive integer <= ',num2str(max_class)),' Warning ')
