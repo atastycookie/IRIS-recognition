@@ -251,6 +251,7 @@ while chos~=possibility,
                 disp(messaggio2);
                 disp('Recognized ID');
                 disp(pos);
+                disp(pesi);
             else
                 warndlg('No image processing is possible. Database is empty.',' Warning ')
             end
