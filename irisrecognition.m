@@ -25,7 +25,24 @@ while chos~=possibility,
     if chos==2,
         clc;
         
-        img=rgb2gray(snapshot(cam));
+         symbols = ['a':'z' 'A':'Z' '0':'9'];
+         MAX_ST_LENGTH = 10;
+         stLength = randi(MAX_ST_LENGTH);
+         nums = randi(numel(symbols),[1 stLength]);
+         st = symbols (nums);
+        
+        tmpName = [st,'.png'];
+        imwrite(rgb2gray(snapshot(cam)), tmpName);
+        
+        [namefile,pathname]=uigetfile('*.*','Select image');
+        if namefile~=0
+            [img,map]=imread(strcat(pathname,namefile));
+            imshow(img);
+            dimensioni = size(img);
+        else
+            warndlg('Input image must be selected.',' Warning ')
+        end
+        
         delete(cam);
         
         if exist('img')
