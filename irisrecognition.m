@@ -28,7 +28,7 @@ while chos~=possibility,
         close all;
 
         
-        [namefile,pathname]=uigetfile('*.*','Select image');
+        [namefile,pathname]=uigetfile('your.png','Select image');
         if namefile~=0
             [img,map]=imread(strcat(pathname,namefile));
             imshow(img);
@@ -896,27 +896,27 @@ yo = int32(yo);
 
 ind1 = sub2ind(size(image),double(yo),double(xo));
 
-%image = uint8(image);
+image = uint8(image);
 
-%image(ind1) = 255;
-%get pixel coords for circle around iris
-%[x,y] = circlecoords([x_iris,y_iris],r_iris,size(image));
-%ind2 = sub2ind(size(image),double(y),double(x));
-%get pixel coords for circle around pupil
-%[xp,yp] = circlecoords([x_pupil,y_pupil],r_pupil,size(image));
-%ind1 = sub2ind(size(image),double(yp),double(xp));
+image(ind1) = 255;
+% get pixel coords for circle around iris
+[x,y] = circlecoords([x_iris,y_iris],r_iris,size(image));
+ind2 = sub2ind(size(image),double(y),double(x));
+% get pixel coords for circle around pupil
+[xp,yp] = circlecoords([x_pupil,y_pupil],r_pupil,size(image));
+ind1 = sub2ind(size(image),double(yp),double(xp));
 
-%image(ind2) = 255;
-%image(ind1) = 255;
+image(ind2) = 255;
+image(ind1) = 255;
 
 
 % write out rings overlaying original iris image
-% w = cd;
-% cd(DIAGPATH);
-%
-% imwrite(image,[eyeimage_filename,'-normal.jpg'],'jpg');
-%
-% cd(w);
+%w = cd;
+%cd(DIAGPATH);
+
+imwrite(image,'your-normal.jpg','jpg');
+
+%cd(w);
 
 % end diagnostics
 
