@@ -617,6 +617,8 @@ filtersum = fftshift(filtersum);
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 function h = houghcircle(edgeim, rmin, rmax)
+%% This function is replaced by the faster mex implementation
+%% Original m-code:
  [rows,cols] = size(edgeim);
  nradii = rmax-rmin+1;
  h = zeros(rows,cols,nradii);
@@ -659,7 +661,11 @@ function h = houghcircle(edgeim, rmin, rmax)
      end
  
  end
-
+%% Mex implementation:
+%h = mexhcimpl(edgeim,rmin,rmax);
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
 function bw = hysthresh(im, T1, T2)
 
 if (T2 > T1 | T2 < 0 | T1 < 0)  % Check thesholds are sensible
