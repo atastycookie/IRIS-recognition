@@ -24,9 +24,14 @@ while chos~=possibility,
         
         imwrite(rgb2gray(snapshot(cam)), 'your.png');
         
-        delete(cam);
-        close all;
-
+        pause;
+  
+        
+    end
+    %----------------
+    if chos==2,
+        clc;
+        
         
         [namefile,pathname]=uigetfile('*.*','Select image');
         if namefile~=0
@@ -36,13 +41,9 @@ while chos~=possibility,
         else
             warndlg('Input image must be selected.',' Warning ')
         end
-        disp('An image has just been selected. Now you can add it to database (click on "Add selected image to database")');
-        disp('or perform iris recognition (click on "Iris Recognition")');
         
-    end
-    %----------------
-    if chos==2,
-        clc;     
+        delete(cam);
+        
         if exist('img')
             if (exist('iris_database.dat')==2)
                 load('iris_database.dat','-mat');
