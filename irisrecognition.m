@@ -214,11 +214,15 @@ while chos~=possibility,
                 [val,pos] = min(pesi);
                 pos       = features_data{pos,2};
                 disp('---');
-                messaggio2 = sprintf('%s','Recognized iris image: ',features_data{pos,3});
-                disp(messaggio2);
-                disp('Recognized ID');
-                disp(pos);
-                disp(pesi);
+                if isnan(pesi)
+                    disp('Idi nahuy');
+                else
+                    messaggio2 = sprintf('%s','Recognized iris image: ',features_data{pos,3});
+                    disp(messaggio2);
+                    disp('Recognized ID');
+                    disp(pos);
+                    disp(pesi);
+                end
             else
                 warndlg('No image processing is possible. Database is empty.',' Warning ')
             end
