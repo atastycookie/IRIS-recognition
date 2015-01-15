@@ -3,16 +3,14 @@ function [out]=irisrecognition()
 %--------------------------------------------------------------------
 clc;
 chos=0;
-possibility=8;
-% Finger Recognition Parameters
+possibility=7;
 scales = 1;
 
 
 messaggio='Insert the number of class: each class determins a person. The ID number is a progressive, integer number. Each class should include a number of images for each person.';
 
 while chos~=possibility,
-    chos=menu('Iris Recognition System','Open Camera','Take Photo to database','Database Info','Iris Recognition','Delete Database','Program info',...
-        'Source code for Iris Recognition System','Exit');
+    chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать файл','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удавить базу данных','Выйти');
     %----------------
     if chos==1,
         clc;
@@ -28,7 +26,7 @@ while chos~=possibility,
         close all;
 
         
-        [namefile,pathname]=uigetfile('your.png','Select image');
+        [namefile,pathname]=uigetfile('your.png','Выберите фотографию your.png');
         if namefile~=0
             [img,map]=imread(strcat(pathname,namefile));
             imshow(img);
@@ -38,10 +36,14 @@ while chos~=possibility,
         end
         disp('An image has just been selected. Now you can add it to database (click on "Add selected image to database")');
         disp('or perform iris recognition (click on "Iris Recognition")');
-        
+        delete('your.png');
     end
     %----------------
-    if chos==2,
+    if chos==2
+        'ЛУАлдыаллуа       '
+    end
+    %----------------
+    if chos==3,
         clc;     
         if exist('img')
             if (exist('iris_database.dat')==2)
@@ -62,13 +64,13 @@ while chos~=possibility,
                     else
                         disp('Features extraction...please wait');
                         if class_number==max_class;
-                            % this person (class) has never been added to
-                            % database before this moment
+                            % Данный пользователь (класс) не
+                            % зарегистрирован в базе данных.
                             max_class = class_number+1;
                             features  = findfeatures(img,scales);
                         else
-                            % this person (class) has already been added to
-                            % database
+                            % Данный пользователь (класс)
+                            % зарегистрирован в базе данных.
                             features  = findfeatures(img,scales);
                         end
 
@@ -154,7 +156,64 @@ while chos~=possibility,
         end
     end
     %----------------
-    if chos==3,
+    if chos==4,
+        clc;
+        close all;
+        if exist('img')
+
+            if (exist('iris_database.dat')==2)
+                load('iris_database.dat','-mat');
+                disp('Features extraction for iris recognition...please wait');
+                % код аутентификации пользователя по радужной оболочке.
+                features  = findfeatures(img,scales);
+                %                 L = length(features);
+                %                 score = zeros(max_class-1,1);
+                %                 for ii=1:L
+                %                     pesi = zeros(features_size,1);
+                %                     for jj=1:features_size
+                %                         pesi(jj)=norm(features{ii}-features_data{jj,1});
+                %                     end
+                %                     [val,pos]=min(pesi);
+                %                     trovato = features_data{pos,2};
+                %                     score(trovato)=score(trovato)+1;
+                %                 end
+                %                 [val,pos]=max(score);
+                messaggio2 = sprintf('%s','Input iris image: ',strcat(pathname,namefile));
+                disp(messaggio2);
+                disp('---');
+                pesi = zeros(features_size,1);
+                for ii=1:features_size
+                    messaggio2 = sprintf('%s','Current scanned iris image:',features_data{ii,3},' ID: ',num2str(features_data{ii,2}));
+%                     disp(messaggio2);
+                    % hd = gethammingdistance(template1, mask1, template2,mask2, scales)
+                    template1 = features{1};
+                    mask1     = features{2};
+                    template2 = features_data{ii,1}{1};
+                    mask2     = features_data{ii,1}{2};
+                    pesi(ii)  = gethammingdistance(template1, mask1, template2,mask2, scales);
+                end
+                [val,pos] = min(pesi);
+                pos       = features_data{pos,2};
+                disp('---');
+                if pesi > 0.4
+                    disp('Прошу прощения, сударь, но Вас послали!');
+                else
+                    messaggio2 = sprintf('%s','Recognized iris image: ',features_data{pos,3});
+                    disp(messaggio2);
+                    disp('Recognized ID');
+                    disp(pos);
+%                      disp(pesi);
+                end
+            else
+                warndlg('No image processing is possible. Database is empty.',' Warning ')
+            end
+        else
+            warndlg('Input image must be selected.',' Warning ')
+        end
+        delete('your-normal.jpg');
+    end
+    %----------------
+    if chos==5,
         clc;
         close all;
         clear('img');
@@ -175,63 +234,7 @@ while chos~=possibility,
         end
     end
     %----------------
-    if chos==4,
-        clc;
-        close all;
-        if exist('img')
-
-            if (exist('iris_database.dat')==2)
-                load('iris_database.dat','-mat');
-                disp('Features extraction for iris recognition...please wait');
-                % code for iris recognition
-                features  = findfeatures(img,scales);
-                %                 L = length(features);
-                %                 score = zeros(max_class-1,1);
-                %                 for ii=1:L
-                %                     pesi = zeros(features_size,1);
-                %                     for jj=1:features_size
-                %                         pesi(jj)=norm(features{ii}-features_data{jj,1});
-                %                     end
-                %                     [val,pos]=min(pesi);
-                %                     trovato = features_data{pos,2};
-                %                     score(trovato)=score(trovato)+1;
-                %                 end
-                %                 [val,pos]=max(score);
-                messaggio2 = sprintf('%s','Input iris image: ',strcat(pathname,namefile));
-                disp(messaggio2);
-                disp('---');
-                pesi = zeros(features_size,1);
-                for ii=1:features_size
-                    messaggio2 = sprintf('%s','Current scanned iris image:',features_data{ii,3},' ID: ',num2str(features_data{ii,2}));
-                    disp(messaggio2);
-                    % hd = gethammingdistance(template1, mask1, template2,mask2, scales)
-                    template1 = features{1};
-                    mask1     = features{2};
-                    template2 = features_data{ii,1}{1};
-                    mask2     = features_data{ii,1}{2};
-                    pesi(ii)  = gethammingdistance(template1, mask1, template2,mask2, scales);
-                end
-                [val,pos] = min(pesi);
-                pos       = features_data{pos,2};
-                disp('---');
-                if isnan(pesi)
-                    disp('Idi nahuy');
-                else
-                    messaggio2 = sprintf('%s','Recognized iris image: ',features_data{pos,3});
-                    disp(messaggio2);
-                    disp('Recognized ID');
-                    disp(pos);
-                    disp(pesi);
-                end
-            else
-                warndlg('No image processing is possible. Database is empty.',' Warning ')
-            end
-        else
-            warndlg('Input image must be selected.',' Warning ')
-        end
-    end
-    %----------------
-    if chos==5,
+    if chos==6,
         clc;
         close all;
         if (exist('iris_database.dat')==2)
@@ -245,30 +248,8 @@ while chos~=possibility,
             warndlg('Database is empty.',' Warning ')
         end
     end
-    %----------------
-    if chos==6,
-        clc;
-        close all;
-        helpwin readme;
-    end
-    %----------------
-    %     if chos==7,
-    %         clc;
-    %         close all;
-    %         if (exist('face_database.dat')==2)
-    %             load('face_database.dat','-mat');
-    %             % visualization
-    %
-    %         else
-    %             warndlg('Database is empty.',' Warning ');
-    %         end
-    %     end
-    %----------------
-    if chos==7,
-        clc;
-        close all;
-        web http://google.com
-        helpwin sourcecode;
+    if chos==7
+        close;       
     end
 end
 %--------------------------------------------------------------------------
@@ -282,7 +263,7 @@ if nargin == 3
     weight = 1;
 end
 
-% c and radius must be integers
+% c и radius должны быть представлены в int значениях.
 if any(c-fix(c))
     error('Circle centre must be in integer coordinates');
 end
@@ -295,13 +276,13 @@ x = 0:fix(radius/sqrt(2));
 costheta = sqrt(1 - (x.^2 / radius^2));
 y = round(radius*costheta);
 
-% Now fill in the 8-way symmetric points on a circle given coords
-% [px py] of a point on the circle.
+% Сейчас отмечаются 8 точек, равноудаленных друг от друга по кругу и
+% сохраняются их координаты [px py].
 
 px = c(2) + [x  y  y  x -x -y -y -x];
 py = c(1) + [y  x -x -y -y -x  x  y];
 
-% Cull points that are outside limits
+% Отбираются точки, находящиеся за пределами лимитов.
 validx = px>=1 & px<=hr;
 validy = py>=1 & py<=hc;
 valid = find(validx & validy);
@@ -326,11 +307,11 @@ else
     newim = im;
 end
 
-% rescale range 0-1
+% масштабирование диапазона 0-1.
 newim = newim-min(min(newim));
 newim = newim./max(max(newim));
 
-newim =  newim.^(1/g);   % Apply gamma function
+newim =  newim.^(1/g);   % Применение гамма-функций.
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
@@ -339,10 +320,10 @@ function [gradient, or] = canny(im, sigma, scaling, vert, horz)
 xscaling = vert;
 yscaling = horz;
 
-hsize = [6*sigma+1, 6*sigma+1];   % The filter size.
+hsize = [6*sigma+1, 6*sigma+1];   % Размер фильтра.
 
 gaussian = fspecial('gaussian',hsize,sigma);
-im = filter2(gaussian,im);        % Smoothed image.
+im = filter2(gaussian,im);        % Сглаживание фотографии.
 
 im = imresize(im, scaling);
 
@@ -358,12 +339,12 @@ d2 = [  zeros(1,cols); im(1:rows-1,2:cols) zeros(rows-1,1);  ] - ...
 X = ( h + (d1 + d2)/2.0 ) * xscaling;
 Y = ( v + (d1 - d2)/2.0 ) * yscaling;
 
-gradient = sqrt(X.*X + Y.*Y); % Gradient amplitude.
+gradient = sqrt(X.*X + Y.*Y); % Градиент амплитуды.
 
-or = atan2(-Y, X);            % Angles -pi to + pi.
-neg = or<0;                   % Map angles to 0-pi.
+or = atan2(-Y, X);            % Углы от -pi до + pi.
+neg = or<0;                   % Карта углов 0-pi.
 or = or.*~neg + (or+pi).*neg;
-or = or*180/pi;               % Convert to degrees.
+or = or*180/pi;               % Перевод в градусы.
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
@@ -383,8 +364,8 @@ yd = (double(r)*sin(a)+ double(c(2)) );
 xd = round(xd);
 yd = round(yd);
 
-%get rid of -ves
-%get rid of values larger than image
+%Освобождаемся от -ves.
+%Освобождаемся от значений, больше изображения.
 xd2 = xd;
 coords = find(xd>imgsize(2));
 xd2(coords) = imgsize(2);
@@ -404,7 +385,7 @@ y = int32(yd2);
 %--------------------------------------------------------------------------
 function [template, mask] = encode(polar_array,noise_array, nscales, minWaveLength, mult, sigmaOnf)
 
-% convolve normalised region with Gabor filters
+%Свертка нормадизованной области с фильтром Габора.
 [E0 filtersum] = gaborconvolve(polar_array, nscales, minWaveLength, mult, sigmaOnf);
 
 length = size(polar_array,2)*2*nscales;
@@ -414,7 +395,7 @@ template = zeros(size(polar_array,1), length);
 length2 = size(polar_array,2);
 h = 1:size(polar_array,1);
 
-%create the iris template
+%Создание шаблона радужки.
 
 mask = zeros(size(template));
 
@@ -422,24 +403,23 @@ for k=1:nscales
 
     E1 = E0{k};
 
-    %Phase quantisation
+    %Фаза квантования.
     H1 = real(E1) > 0;
     H2 = imag(E1) > 0;
 
-    % if amplitude is close to zero then
-    % phase data is not useful, so mark off
-    % in the noise mask
+    % Если амплитуда близка к 0, то фазовые данные бесполезны, отметка убирается.
+    in the noise mask
     H3 = abs(E1) < 0.0001;
 
 
     for i=0:(length2-1)
 
         ja = double(2*nscales*(i));
-        %construct the biometric template
+        %Создание биометрического шаблона.
         template(h,ja+(2*k)-1) = H1(h, i+1);
         template(h,ja+(2*k)) = H2(h,i+1);
 
-        %create noise mask
+        %Создание маски шумов.
         mask(h,ja+(2*k)-1) = noise_array(h, i+1) | H3(h, i+1);
         mask(h,ja+(2*k)) =   noise_array(h, i+1) | H3(h, i+1);
 
@@ -455,19 +435,18 @@ lradsc = round(lradius*scaling);
 uradsc = round(uradius*scaling);
 rd = round(uradius*scaling - lradius*scaling);
 
-% generate the edge image
+% Генерация края изображения.
 [I2 or] = canny(image, sigma, scaling, vert, horz);
 I3 = adjgamma(I2, 1.9);
 I4 = nonmaxsup(I3, or, 1.5);
 edgeimage = hysthresh(I4, hithres, lowthres);
 
-% perform the circular Hough transform
+% Выполнение кругового преобразования Хафа.
 h = houghcircle(edgeimage, lradsc, uradsc);
 
 maxtotal = 0;
 
-% find the maximum in the Hough space, and hence
-% the parameters of the circle
+%Нахождение максимума в пространстве Хафа и, следовательно, параметры круга.
 for i=1:rd
 
     layer = h(:,:,i);
@@ -484,7 +463,7 @@ for i=1:rd
         [row,col] = ( find(layer == maxlayer) );
 
 
-        row = int32(row(1) / scaling); % returns only first max value
+        row = int32(row(1) / scaling); %Возвращает только первое максимальное значение.
         col = int32(col(1) / scaling);
 
     end
@@ -535,25 +514,25 @@ function [EO, filtersum] = gaborconvolve(im, nscale, minWaveLength, mult, ...
 [rows cols] = size(im);
 filtersum = zeros(1,size(im,2));
 
-EO = cell(1, nscale);          % Pre-allocate cell array
+EO = cell(1, nscale);          %Предварительное выделение массива ячеек.
 
 ndata = cols;
-if mod(ndata,2) == 1             % If there is an odd No of data points
-    ndata = ndata-1;               % throw away the last one.
+if mod(ndata,2) == 1             % Отбрасывание последней точки, если их нечетное количество.
+    ndata = ndata-1;
 end
 
 logGabor  = zeros(1,ndata);
 result = zeros(rows,ndata);
 
-radius =  [0:fix(ndata/2)]/fix(ndata/2)/2;  % Frequency values 0 - 0.5
+radius =  [0:fix(ndata/2)]/fix(ndata/2)/2;  % Частота значений 0 - 0.5.
 radius(1) = 1;
 
-wavelength = minWaveLength;        % Initialize filter wavelength.
+wavelength = minWaveLength;        % Назначение длины волны фильтра.
 
 
-for s = 1:nscale,                  % For each scale.
+for s = 1:nscale,                  %Для каждого масштаба.
 
-    % Construct the filter - first calculate the radial filter component.
+    % Фильтрация - сначала вычисление радиальной составляющей фильтра.
     fo = 1.0/wavelength;                  % Centre frequency of filter.
     rfo = fo/0.5;                         % Normalised radius from centre of frequency plane
     % corresponding to fo.
@@ -937,7 +916,7 @@ function [circleiris, circlepupil, imagewithnoise] = segmentiris(eyeimage)
 
 % define range of pupil & iris radii
 
-%CASIA
+%CUHK
 lpupilradius = 28;
 upupilradius = 75;
 lirisradius = 80;
@@ -950,7 +929,7 @@ uirisradius = 150;
 %    uirisradius = 169;
 
 
-% define scaling factor to speed up Hough transform
+% define scaling factor to speed up Хафа transform
 scaling = 0.4;
 
 reflecthres = 240;
@@ -1049,7 +1028,7 @@ if size(lines,1) > 0
 
 end
 
-%For CASIA, eliminate eyelashes by thresholding
+%For CUHK, eliminate eyelashes by thresholding
 ref = eyeimage < 100;
 coords = find(ref==1);
 imagewithnoise(coords) = NaN;
