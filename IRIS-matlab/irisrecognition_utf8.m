@@ -61,6 +61,63 @@ while chos~=possibility,
                 data{face_number,1}=double(img);
                 %sprintf('%s','hello',' ','ciao') 
                 prompt={sprintf('%s',messaggio,'ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class))};
+
+
+
+
+
+
+
+
+
+
+
+                 title=num2str(max_class);
+                 lines=1;
+                 def={num2str(max_class)};
+                 answer=inputdlg(prompt,title,lines,def);
+                 zparameter=double(str2num(char(answer)));
+                 class_number=zparameter(1);
+                 
+                 %Если введен ID = 0 - выводится ошибка с провсьбой ввести положительное натуральное число в качестве ID
+                 %Если введен один из ID (от 1 до class_number) - требуется ввести пароль
+                     %Если пароль верный - происходит сравнение только с данными, относящимся к конкретному ID (class_number)
+                     %Если пароль введен неправильно - выводится сообщение об ошибке и просьба ввести данные заново
+                 %Если введен (max_class) - можно только зарегистрироваться
+                 %Если введен несуществующий ID, значение которого больше max_class, то предлагается зарегистрироваться под ID (max_class)
+                 if (class_number<=0)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
+                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),'Внимание!')
+                     elseIf
+                         %if (class_number в пределах 1 - max_class)
+                         (0<class)&&(class<=max_class)
+                             if (inputed_pass==saved_pass)
+                                 msgbox(sprintf('%s','Все ок, заходи, мистер ',num2str(class_number)),'! Сейчас тебя и твой глаз проверим :D','help');
+                                 else
+                                     msgbox(sprintf('%s','Чувак, либо ты не мистер ',num2str(class_number)),', либо ты ошибся с паролем! Но я разрешаю тебе попробовать еще разок! :D','help');
+                             end
+                 
+                             elseIf (class_number==max_class)
+                             %(ТУТ, КОРОЧЕ, РЕГАЕШЬСЯ! ПОНЯЛ?)
+                             disp('WTF?! :D')
+                     else
+                         if (class_number>max_class)
+                             msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class)-1),'help');
+                         end
+                 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 title='ID пользователя';
                 lines=1;
                 def={'1'};

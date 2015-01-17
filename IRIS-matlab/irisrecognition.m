@@ -10,7 +10,7 @@ scales = 1;
 messaggio='Введите ID пользователя. ID - натуральное положительное число. В каждом ID хранится информация о количестве фотографий данного пользователя.';
 
 while chos~=possibility,
-    chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать фотграфию','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удавить базу данных','Выйти');
+    chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать фотографию','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удалить базу данных','Выйти');
     %----------------
     if chos==1,
         clc;
@@ -61,6 +61,45 @@ while chos~=possibility,
                 data{face_number,1}=double(img);
                 %sprintf('%s','hello',' ','ciao') 
                 prompt={sprintf('%s',messaggio,'ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class))};
+                
+                
+%                 title=num2str(max_class);
+%                 lines=1;
+%                 def={num2str(max_class)};
+%                 answer=inputdlg(prompt,title,lines,def);
+%                 zparameter=double(str2num(char(answer)));
+%                 class_number=zparameter(1);
+%                 
+%                 %Если введен ID = 0 - выводится ошибка с провсьбой ввести положительное натуральное число в качестве ID
+%                 %Если введен один из ID (от 1 до class_number) - требуется ввести пароль
+%                     %Если пароль верный - происходит сравнение только с данными, относящимся к конкретному ID (class_number)
+%                     %Если пароль введен неправильно - выводится сообщение об ошибке и просьба ввести данные заново
+%                 %Если введен (max_class) - можно только зарегистрироваться
+%                 %Если введен несуществующий ID, значение которого больше max_class, то предлагается зарегистрироваться под ID (max_class)
+%                 if (class_number<=0)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
+%                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),'Внимание!')
+%                     elseIf
+%                         %if (class_number в пределах 1 - max_class)
+%                         (0<class)&&(class<=max_class)
+%                             if (inputed_pass==saved_pass)
+%                                 msgbox(sprintf('%s','Все ок, заходи, мистер ',num2str(class_number)),'! Сейчас тебя и твой глаз проверим :D','help');
+%                                 else
+%                                     msgbox(sprintf('%s','Чувак, либо ты не мистер ',num2str(class_number)),', либо ты ошибся с паролем! Но я разрешаю тебе попробовать еще разок! :D','help');
+%                             end
+%                 
+%                             elseIf (class_number==max_class)
+%                             %(ТУТ, КОРОЧЕ, РЕГАЕШЬСЯ! ПОНЯЛ?)
+%                             disp('WTF?! :D')
+%                     else
+%                         if (class_number>max_class)
+%                             msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class)-1),'help');
+%                         end
+%                 end
+                
+                
+                
+                
+                
                 title='ID пользователя';
                 lines=1;
                 def={'1'};
@@ -85,12 +124,6 @@ while chos~=possibility,
 
 
                         data{face_number,2} = class_number;
-                        %                         L = length(features);
-                        %                         for ii=1:L
-                        %                             features_data{features_size+ii,1} = features{ii};
-                        %                             features_data{features_size+ii,2} = class_number;
-                        %                         end
-                        %                         features_size = length(features_data);
                         features_data{features_size+1,1} = features;
                         features_data{features_size+1,2} = class_number;
                         features_data{features_size+1,3} = strcat(pathname,namefile);
@@ -135,11 +168,6 @@ while chos~=possibility,
                         data{face_number,2}=class_number;
                         features  = findfeatures(img,scales);
                         disp('Успешно!');
-                        %                         L = length(features);
-                        %                         for ii=1:L
-                        %                             features_data{ii,1} = features{ii};
-                        %                             features_data{ii,2} = class_number;
-                        %                         end
                         features_data{1,1} = features;
                         features_data{1,2} = class_number;
                         features_data{1,3} = strcat(pathname,namefile);
