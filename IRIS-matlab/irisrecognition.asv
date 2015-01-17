@@ -1,4 +1,44 @@
 function [out]=irisrecognition()
+clc;
+chos=0;
+possibility=4;
+scales = 1;
+messaggio='Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.';
+while chos~=possibility,
+    chos=menu('Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.','Вход в систему','Регистрация','Выход');
+    if chos==1,
+        clc;
+        title='Войдите или зарегистрируйтесь';
+        lines=1; def={'Пароль'};
+        prompt={sprintf('Введите пароль')};
+        answer=inputdlg(prompt,title,lines,def);
+        password=666;
+        zparameter=double(str2num(char(answer)));
+            if (password==zparameter)
+                warndlg('Пароль верный!')
+                    pause(1)
+                    allHandle = allchild(0);
+                    allTag = get(allHandle, 'Tag');
+                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                    delete(allHandle(isWarndlg));
+                elseIf (zparameter~=0)
+                    warndlg('Требуется ввести пароль!')
+            else
+                if (password~=0)
+                    warndlg('Требуется ввести пароль!')
+                else
+                warndlg('Неверный пароль!')
+                    pause(1)
+                    allHandle = allchild(0);
+                    allTag = get(allHandle, 'Tag');
+                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                    delete(allHandle(isWarndlg));
+                break;
+                end
+            end
+
+        
+
 
 %--------------------------------------------------------------------
 clc;
@@ -9,9 +49,15 @@ scales = 1;
 
 messaggio='Введите ID пользователя. ID - натуральное положительное число. В каждом ID хранится информация о количестве фотографий данного пользователя.';
 
+
+
 while chos~=possibility,
-    chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать фотграфию','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удавить базу данных','Выйти');
+    chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать фотографию','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удалить базу данных','Выйти');
     %----------------
+    
+    
+
+
     if chos==1,
         clc;
         
@@ -25,18 +71,13 @@ while chos~=possibility,
         delete(cam);
         close all;
 
-        
-        [namefile,pathname]=uigetfile('your.png','Выберите фотографию your.png');
-        if namefile~=0
-            [img,map]=imread(strcat(pathname,namefile));
-            imshow(img);
-            dimensioni = size(img);
-        else
-            warndlg('Требуется выбрать какую-либо фотографию.',' Внимание!')
-        end
+        namefile='\your.png';
+        pathname=cd;
+        [img,map]=imread(strcat(pathname,namefile));
+        dimensioni = size(img);
         disp('Можно добавить данную фотографию в базу данных конкретного пользователя. Для этого нажмите "Добавить фотографию в базу данных"');
         disp('или пройдите проверку по радужке. Для этого нажмите "Определение пользователя по радужке"');
-%         delete('your.png');
+         delete('your.png');
     end
     %----------------
     if chos==2
@@ -63,43 +104,47 @@ while chos~=possibility,
                 prompt={sprintf('%s',messaggio,'ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class))};
                 
                 
-                
-                
-                %Если введен ID = 0 - выводится ошибка с провсьбой ввести положительное натуральное число в качестве ID
-                %Если введен один из ID (от 1 до class_number) - требуется ввести пароль
-                    %Если пароль верный - происходит сравнение только с данными, относящимся к конкретному ID (class_number)
-                    %Если пароль введен неправильно - выводится сообщение об ошибке и просьба ввести данные заново
-                %Если введен (max_class) - можно только зарегистрироваться
-                %Если введен несуществующий ID, значение которого больше max_class, то предлагается зарегистрироваться под ID (max_class)
-                if (class_number<=0)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
-                    warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),'Внимание!')
-                    else
-                        %if (class_number в пределах 1 - max_class)
-                        if (max_class)
-                            if (inputed_pass==saved_pass)
-                                msgbox(sprintf('%s','Все ок, заходи, мистер ',num2str(class_number)),'! Сейчас тебя и твой глаз проверим :D','help');
-                                else
-                                    msgbox(sprintf('%s','Чувак, либо ты не мистер ',num2str(class_number)),', либо ты ошибся с паролем! Но я разрешаю тебе попробовать еще разок! :D','help');
-                            end
-                        %end
-                    %else
-                        if (class_number==max_class)
-                            %(ТУТ, КОРОЧЕ, РЕГАЕШЬСЯ! ПОНЯЛ?)
-                            disp('WTF?! :D')
-                        end
-                    else
-                        if (class_number>max_class)
-                            msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number)),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class-1),'help');
-                        end
-                end
-                
-                
-                
-                
-                
+%                 title=num2str(max_class);
+%                 lines=1;
+%                 def={num2str(max_class)};
+%                 answer=inputdlg(prompt,title,lines,def);
+%                 zparameter=double(str2num(char(answer)));
+%                 class_number=zparameter(1);
+% 
+%                 
+%                 %Если введен ID = 0 - выводится ошибка с провсьбой ввести положительное натуральное число в качестве ID
+%                 %Если введен один из ID (от 1 до class_number) - требуется ввести пароль
+%                     %Если пароль верный - происходит сравнение только с данными, относящимся к конкретному ID (class_number)
+%                     %Если пароль введен неправильно - выводится сообщение об ошибке и просьба ввести данные заново
+%                 %Если введен (max_class) - можно только зарегистрироваться
+%                 %Если введен несуществующий ID, значение которого больше max_class, то предлагается зарегистрироваться под ID (max_class)
+%                 if (class_number<=0)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
+%                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),'Внимание!')
+%                     elseIf
+%                         %if (class_number в пределах 1 - max_class)
+%                         (0<class)&&(class<=max_class)
+%                             if (inputed_pass==saved_pass)
+%                                 msgbox(sprintf('%s','Все ок, заходи, мистер ',num2str(class_number)),'! Сейчас тебя и твой глаз проверим :D','help');
+%                                 else
+%                                     msgbox(sprintf('%s','Чувак, либо ты не мистер ',num2str(class_number)),', либо ты ошибся с паролем! Но я разрешаю тебе попробовать еще разок! :D','help');
+%                             end
+%                 
+%                             elseIf (class_number==max_class)
+%                             %(ТУТ, КОРОЧЕ, РЕГАЕШЬСЯ! ПОНЯЛ?)
+%                             disp('WTF?! :D')
+%                     else
+%                         if (class_number>max_class)
+%                             hoh=msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class)-1),'help');
+%                             set(hoh, 'Position', [800 300 400 75])
+%                         end
+%                 end
+
+
+
+
                 title='ID пользователя';
                 lines=1;
-                def={'1'};
+                def={num2str(max_class)};
                 answer=inputdlg(prompt,title,lines,def);
                 zparameter=double(str2num(char(answer)));
                 if size(zparameter,1)~=0
@@ -121,12 +166,6 @@ while chos~=possibility,
 
 
                         data{face_number,2} = class_number;
-                        %                         L = length(features);
-                        %                         for ii=1:L
-                        %                             features_data{features_size+ii,1} = features{ii};
-                        %                             features_data{features_size+ii,2} = class_number;
-                        %                         end
-                        %                         features_size = length(features_data);
                         features_data{features_size+1,1} = features;
                         features_data{features_size+1,2} = class_number;
                         features_data{features_size+1,3} = strcat(pathname,namefile);
@@ -142,11 +181,11 @@ while chos~=possibility,
                         disp(messaggio2);
                         messaggio2 = sprintf('%s','ID пользователя: ',num2str(class_number));
                         disp(messaggio2);
-                        disp(data);
-                        disp(face_number);
-                        disp(max_class);
-                        disp(features_data);
-                        disp(features_size);
+%                         disp(data);
+%                         disp(face_number);
+%                         disp(max_class);
+%                         disp(features_data);
+%                         disp(features_size);
                     end
                 else
                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),' Внимание!')
@@ -171,11 +210,6 @@ while chos~=possibility,
                         data{face_number,2}=class_number;
                         features  = findfeatures(img,scales);
                         disp('Успешно!');
-                        %                         L = length(features);
-                        %                         for ii=1:L
-                        %                             features_data{ii,1} = features{ii};
-                        %                             features_data{ii,2} = class_number;
-                        %                         end
                         features_data{1,1} = features;
                         features_data{1,2} = class_number;
                         features_data{1,3} = strcat(pathname,namefile);
@@ -255,7 +289,7 @@ while chos~=possibility,
         else
             warndlg('Требуется выбрать изображение.',' Внимание!')
         end
-%         delete('your-normal.jpg');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         delete('your-normal.jpg');
     end
     %----------------
     if chos==5,
@@ -295,6 +329,30 @@ while chos~=possibility,
     end
     if chos==7
         close;       
+    end
+end
+
+
+    end
+    if chos==2,
+        clc;
+        warndlg('Ну и регайся!','Успешно')
+       	pause(1)
+        allHandle = allchild(0);
+        allTag = get(allHandle, 'Tag');
+        isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+        delete(allHandle(isWarndlg));
+    end
+    if chos==3,
+        clc;
+        warndlg('Пока!!','Успешно')
+        pause(1)
+        allHandle = allchild(0);
+        allTag = get(allHandle, 'Tag');
+        isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+        delete(allHandle(isWarndlg));
+        pause(1)
+        break;
     end
 end
 %--------------------------------------------------------------------------

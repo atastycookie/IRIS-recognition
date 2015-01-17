@@ -1,4 +1,49 @@
 function [out]=irisrecognition()
+clc;
+chos=0;
+possibility=4;
+scales = 1;
+messaggio='Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.';
+while chos~=possibility,
+    chos=menu('Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.','Вход в систему','Регистрация','Выход');
+    if chos==1,
+        clc;
+        title='Войдите или зарегистрируйтесь';
+        lines=1; def={'Пароль'};
+        prompt={sprintf('Введите пароль')};
+        answer=inputdlg(prompt,title,lines,def);
+        password=666;
+        zparameter=double(str2num(char(answer)));
+            if (password==zparameter)
+                warndlg('Пароль верный!')
+                    pause(1)
+                    allHandle = allchild(0);
+                    allTag = get(allHandle, 'Tag');
+                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                    delete(allHandle(isWarndlg));
+            elseif (zparameter~=0)
+                    warndlg('Требуется ввести пароль!')
+            else
+                if (password~=0)
+                    warndlg('Требуется ввести пароль!')
+                    pause(1)
+                    allHandle = allchild(0);
+                    allTag = get(allHandle, 'Tag');
+                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                    delete(allHandle(isWarndlg));
+                else
+                warndlg('Неверный пароль!')
+                    pause(1)
+                    allHandle = allchild(0);
+                    allTag = get(allHandle, 'Tag');
+                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                    delete(allHandle(isWarndlg));
+                end
+            break;
+            end
+
+        
+
 
 %--------------------------------------------------------------------
 clc;
@@ -9,9 +54,15 @@ scales = 1;
 
 messaggio='Введите ID пользователя. ID - натуральное положительное число. В каждом ID хранится информация о количестве фотографий данного пользователя.';
 
+
+
 while chos~=possibility,
     chos=menu('Система Аутентификации по радужке','Сделать фотографию глаза','Выбрать фотографию','Добавить изображение в базу данных','Определение пользователя по радужке','Информация о базе данных','Удалить базу данных','Выйти');
     %----------------
+    
+    
+
+
     if chos==1,
         clc;
         
@@ -25,18 +76,13 @@ while chos~=possibility,
         delete(cam);
         close all;
 
-        
-        [namefile,pathname]=uigetfile('your.png','Выберите фотографию your.png');
-        if namefile~=0
-            [img,map]=imread(strcat(pathname,namefile));
-            imshow(img);
-            dimensioni = size(img);
-        else
-            warndlg('Требуется выбрать какую-либо фотографию.',' Внимание!')
-        end
+        namefile='\your.png';
+        pathname=cd;
+        [img,map]=imread(strcat(pathname,namefile));
+        dimensioni = size(img);
         disp('Можно добавить данную фотографию в базу данных конкретного пользователя. Для этого нажмите "Добавить фотографию в базу данных"');
         disp('или пройдите проверку по радужке. Для этого нажмите "Определение пользователя по радужке"');
-%         delete('your.png');
+         delete('your.png');
     end
     %----------------
     if chos==2
@@ -69,6 +115,7 @@ while chos~=possibility,
 %                 answer=inputdlg(prompt,title,lines,def);
 %                 zparameter=double(str2num(char(answer)));
 %                 class_number=zparameter(1);
+% 
 %                 
 %                 %Если введен ID = 0 - выводится ошибка с провсьбой ввести положительное натуральное число в качестве ID
 %                 %Если введен один из ID (от 1 до class_number) - требуется ввести пароль
@@ -92,17 +139,17 @@ while chos~=possibility,
 %                             disp('WTF?! :D')
 %                     else
 %                         if (class_number>max_class)
-%                             msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class)-1),'help');
+%                             hoh=msgbox(sprintf('%s','Ты точно не мистер ',num2str(class_number),'! Попробуй войти под одним из ID от 1 до ',num2str(max_class)-1),'help');
+%                             set(hoh, 'Position', [800 300 400 75])
 %                         end
 %                 end
-                
-                
-                
-                
-                
+
+
+
+
                 title='ID пользователя';
                 lines=1;
-                def={'1'};
+                def={num2str(max_class)};
                 answer=inputdlg(prompt,title,lines,def);
                 zparameter=double(str2num(char(answer)));
                 if size(zparameter,1)~=0
@@ -139,11 +186,11 @@ while chos~=possibility,
                         disp(messaggio2);
                         messaggio2 = sprintf('%s','ID пользователя: ',num2str(class_number));
                         disp(messaggio2);
-                        disp(data);
-                        disp(face_number);
-                        disp(max_class);
-                        disp(features_data);
-                        disp(features_size);
+%                         disp(data);
+%                         disp(face_number);
+%                         disp(max_class);
+%                         disp(features_data);
+%                         disp(features_size);
                     end
                 else
                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),' Внимание!')
@@ -247,7 +294,7 @@ while chos~=possibility,
         else
             warndlg('Требуется выбрать изображение.',' Внимание!')
         end
-%         delete('your-normal.jpg');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         delete('your-normal.jpg');
     end
     %----------------
     if chos==5,
@@ -287,6 +334,30 @@ while chos~=possibility,
     end
     if chos==7
         close;       
+    end
+end
+
+
+    end
+    if chos==2,
+        clc;
+        warndlg('Ну и регайся!','Успешно')
+       	pause(1)
+        allHandle = allchild(0);
+        allTag = get(allHandle, 'Tag');
+        isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+        delete(allHandle(isWarndlg));
+    end
+    if chos==3,
+        clc;
+        warndlg('Пока!!','Успешно')
+        pause(1)
+        allHandle = allchild(0);
+        allTag = get(allHandle, 'Tag');
+        isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+        delete(allHandle(isWarndlg));
+        pause(1)
+        break;
     end
 end
 %--------------------------------------------------------------------------
