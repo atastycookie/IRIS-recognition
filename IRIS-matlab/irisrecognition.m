@@ -8,29 +8,29 @@ while chos~=possibility,
     chos=menu('Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.','Вход в систему','Регистрация','Выход');
     if chos==1,
         clc;
-        title='Войдите или зарегистрируйтесь';
-        lines=1; def={'Пароль'};
-        prompt={sprintf('Введите пароль')};
-        answer=inputdlg(prompt,title,lines,def);
-        password=666;
-        zparameter=double(str2num(char(answer)));
-            if (password==zparameter)
+        noes = inputdlg({'Введите логин' 'Введите пароль'})
+        title='Войдите в систему';
+            pass_id = str2num(noes{1});
+            pass = str2num(noes{2});
+                if pass==pass_rep
+                    choss=1;
+               
+        
                 warndlg('Пароль верный!')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
                     delete(allHandle(isWarndlg));
-            elseif (zparameter~=0)
-                    warndlg('Требуется ввести пароль!')
-            else
-                if (password~=0)
+            
+                elseif (pass~=0)
                     warndlg('Требуется ввести пароль!')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
                     delete(allHandle(isWarndlg));
+                    break;
                 else
                 warndlg('Неверный пароль!')
                     pause(1)
@@ -39,8 +39,8 @@ while chos~=possibility,
                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
                     delete(allHandle(isWarndlg));
                 end
-            break;
-            end
+
+
 
         
 
@@ -106,7 +106,7 @@ while chos~=possibility,
                 face_number=face_number+1;
                 data{face_number,1}=double(img);
                 %sprintf('%s','hello',' ','ciao') 
-                prompt={sprintf('%s',messaggio,'ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class))};
+                
                 
                 
 %                 title=num2str(max_class);
@@ -147,29 +147,16 @@ while chos~=possibility,
 
 
 
-                title='ID пользователя';
-                lines=1;
-                def={num2str(max_class)};
-                answer=inputdlg(prompt,title,lines,def);
-                zparameter=double(str2num(char(answer)));
-                if size(zparameter,1)~=0
-                    class_number=zparameter(1);
-                    if (class_number<=0)||(class_number>max_class)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
-                        warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),'Внимание!')
-                    else
-                        disp('Обработка фотографии... Пожалуйста, подождите!');
-                        if class_number==max_class;
-                            % Данный пользователь (класс) не
-                            % зарегистрирован в базе данных.
-                            max_class = class_number+1;
-                            features  = findfeatures(img,scales);
-                        else
-                            % Данный пользователь (класс)
-                            % зарегистрирован в базе данных.
+                    class_number=pass_id;
+                    disp('Обработка фотографии... Пожалуйста, подождите!');
+                        if (pass_id>0)
                             features  = findfeatures(img,scales);
                         end
 
-
+                        
+                 
+                        
+                        
                         data{face_number,2} = class_number;
                         features_data{features_size+1,1} = features;
                         features_data{features_size+1,2} = class_number;
@@ -195,50 +182,7 @@ while chos~=possibility,
                 else
                     warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),' Внимание!')
                 end
-            else
-                face_number=1;
-                max_class=1;
-                data{face_number,1}=double(img);
-                prompt={sprintf('%s',messaggio,'ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class))};
-                title='ID пользователя';
-                lines=1;
-                def={'1'};
-                answer=inputdlg(prompt,title,lines,def);
-                zparameter=double(str2num(char(answer)));
-                if size(zparameter,1)~=0
-                    class_number=zparameter(1);
-                    if (class_number<=0)||(class_number>max_class)||(floor(class_number)~=class_number)||(~isa(class_number,'double'))||(any(any(imag(class_number))))
-                        warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),' Внимание!')
-                    else
-                        disp('Обработка фотографии... Пожалуйста, подождите!');
-                        max_class=2;
-                        data{face_number,2}=class_number;
-                        features  = findfeatures(img,scales);
-                        disp('Успешно!');
-                        features_data{1,1} = features;
-                        features_data{1,2} = class_number;
-                        features_data{1,3} = strcat(pathname,namefile);
-                        features_size = size(features_data,1);
-                        save('iris_database.dat','data','face_number','max_class','features_data','features_size');
-                        msgbox(sprintf('%s','База данных была пустой. Успешное создание базы данных. Изображение было успешно добавлено к данному ID ',num2str(class_number)),'Результат базы данных','help');
-                        clc;
-                        close all;
-                        clear('img');
-                        disp('Фотография успешно добавлена в базу данных.');
-                        messaggio2 = sprintf('%s','Путь:',strcat(pathname,namefile));
-                        disp(messaggio2);
-                        messaggio2 = sprintf('%s','ID пользователя: ',num2str(class_number));
-                        disp(messaggio2);
-                    end
-                else
-                    warndlg(sprintf('%s','ID пользователя должен быть положительным натуральным числом <= ',num2str(max_class)),' Внимание!')
-                end
-
             end
-        else
-            errordlg('Ни одной фотографии не было выбрано.','Файл не выбран');
-        end
-    end
     %----------------
     if chos==4,
         clc;
@@ -303,7 +247,7 @@ while chos~=possibility,
         clear('img');
         if (exist('iris_database.dat')==2)
             load('iris_database.dat','-mat');
-            msgbox(sprintf('%s','В базе данных ',num2str(face_number),' фотографий. Для данного количества (',num2str(max_class-1),') ID. Вводимые изображения должны быть одного размера.'),'Результат базы данных','help');
+            msgbox(sprintf('%s','В базе данных ',num2str(face_number),' фотографий. Для данного количества (',num2str(pass_id-1),') ID. Вводимые изображения должны быть одного размера.'),'Результат базы данных','help');
             disp('Изобадение радужки успешно добавлено в базу данных:');
             disp('---');
             for ii=1:features_size
@@ -341,7 +285,16 @@ end
     end
     if chos==2,
         clc;
-        warndlg('Ну и регайся!','Успешно')
+%         warndlg('Ну и регайся!','Успешно')
+        Momo = inputdlg({'Введите логин' 'Введите пароль','Повторите пароль'})
+        title='Зарегистрируйтесь';
+            pass_id = str2num(Momo{1});
+            pass = str2num(Momo{2});
+            pass_rep = str2num(Momo{3});
+                if pass==pass_rep
+                    choss=1;
+                end
+%-------------------
        	pause(1)
         allHandle = allchild(0);
         allTag = get(allHandle, 'Tag');
@@ -350,7 +303,7 @@ end
     end
     if chos==3,
         clc;
-        warndlg('Пока!!','Успешно')
+        warndlg('Пока!','Успешно')
         pause(1)
         allHandle = allchild(0);
         allTag = get(allHandle, 'Tag');
