@@ -8,39 +8,36 @@ while chos~=possibility,
     chos=menu('Добро пожаловать! Для продолжения работы войдите в систему или зарегистрируйтесь.','Вход в систему','Регистрация','Выход');
     if chos==1,
         clc;
-        save('iris_database.dat','pass_id','data','face_number','max_class','features_data','features_size');
         noes = inputdlg({'Введите логин' 'Введите пароль'})
         title='Войдите в систему';
-            pass_id = str2num(noes{1});
-            pass = str2num(noes{2});
-                if pass==pass_rep
-                    choss=1;
-               
-        
-                warndlg('Пароль верный!')
-                    pause(1)
-                    allHandle = allchild(0);
-                    allTag = get(allHandle, 'Tag');
-                    isWarndlg = strncmp(allTag, 'Msgbox_', 7);
-                    delete(allHandle(isWarndlg));
+            id = noes{1};
+            parol = noes{2};
+            userdb=[id,'.dat'];
+            if (exist(userdb)==0)
+               warndlg('Пользователя не существует')
+               break; 
+            end
+                load(userdb,'pass_id','pass','-mat');
             
-                elseif (pass~=0)
-                    warndlg('Требуется ввести пароль!')
+
+               if ((parol~=pass))
+                    warndlg('Неверно')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
                     delete(allHandle(isWarndlg));
                     break;
-                else
-                warndlg('Неверный пароль!')
+
+               else
+                    warndlg('Пароль верный!')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
                     delete(allHandle(isWarndlg));
-                end
-
+                    chos=1;
+               end
 
 
         
@@ -284,7 +281,7 @@ end
 
 
     end
-    if chos==2,
+if chos==2,
         load('iris_database.dat','-mat');
 %        warndlg(sprintf('%s','Требуется ввести ID пользователя: ',num2str(max_class)))
         clc;
@@ -296,32 +293,30 @@ end
         answer=inputdlg(Momo,name,numlines,defaultanswer);
         
         %Momo = inputdlg('Введите пароль','Повторите пароль')
-            pass_id = str2num(answer{1});
-            pass = str2num(answer{2});
-            pass_rep = str2num(answer{3});
+            pass_id = answer{1};
+            pass = answer{2};
+            pass_rep = answer{3};
                 if pass==pass_rep
-                    warndlg(sprintf('Поздравляю! Вы зарегистрированы!'))
-                        
-                    
-                    
-                    
-                    
-                        features_data{features_size+1,2} = pass_id;
 
-                        clc;
-                        save('iris_database.dat','pass_id','data','face_number','max_class','features_data','features_size');
+                    userdb=[pass_id,'.dat'];
+                   if (exist(userdb)==0)
+                        f = fopen(userdb, 'w'); fclose(f);
+                        save(userdb,'pass_id','pass','-mat');
+                   end
+                    warndlg(sprintf('Поздравляю! Вы зарегистрированы!'))
                     choss=1;
                 else
                     warndlg(sprintf('Извините, пароль неверный!'))
                 end
-%-------------------
        	pause(1)
         allHandle = allchild(0);
         allTag = get(allHandle, 'Tag');
         isWarndlg = strncmp(allTag, 'Msgbox_', 7);
         delete(allHandle(isWarndlg));
-    end
-    if chos==3,
+                
+end
+%-------------------
+if chos==3,
         clc;
         warndlg('Пока!','Успешно')
         pause(1)
