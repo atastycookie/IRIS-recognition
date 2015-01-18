@@ -163,7 +163,7 @@ while chos~=possibility,
                         features_data{features_size+1,3} = strcat(pathname,namefile);
                         features_size                    = size(features_data,1);
                         clc;
-                        save('iris_database.dat','data','face_number','max_class','features_data','features_size','-append');
+                        save('iris_database.dat','pass_id','data','face_number','max_class','features_data','features_size');
                         msgbox(sprintf('%s','Изображение успешно добавлено в базу данных ',num2str(class_number)),'Ответ базы данных','help');
                         close all;
                         clear('img');
@@ -247,8 +247,8 @@ while chos~=possibility,
         clear('img');
         if (exist('iris_database.dat')==2)
             load('iris_database.dat','-mat');
-            msgbox(sprintf('%s','В базе данных ',num2str(face_number),' фотографий. Для данного количества (',num2str(pass_id-1),') ID. Вводимые изображения должны быть одного размера.'),'Результат базы данных','help');
-            disp('Изобадение радужки успешно добавлено в базу данных:');
+            msgbox(sprintf('%s','В базе данных ',num2str(face_number),' фотографий. Для данного количества (',num2str(pass_id),') ID. Вводимые изображения должны быть одного размера.'),'Результат базы данных','help');
+            disp('Изображение радужки успешно добавлено в базу данных:');
             disp('---');
             for ii=1:features_size
                 messaggio2 = sprintf('%s','Путь:',features_data{ii,3});%,' ID: ',num2str(features_data{ii,2}));
@@ -284,16 +284,34 @@ end
 
     end
     if chos==2,
-        warndlg(sprintf('%s','ID пользователя: ',num2str(features_data{ii,2})))
+        load('iris_database.dat','-mat');
+%        warndlg(sprintf('%s','Требуется ввести ID пользователя: ',num2str(max_class)))
         clc;
 %         warndlg('Ну и регайся!','Успешно')
-        Momo = inputdlg({'Введите логин' 'Введите пароль','Повторите пароль'})
-        title='Зарегистрируйтесь';
-            pass_id = str2num(Momo{1});
-            pass = str2num(Momo{2});
-            pass_rep = str2num(Momo{3});
+        Momo={'Введите id','Введите пароль','Повторите пароль'};
+        name='Registration';
+        numlines=1;
+        defaultanswer={'','',''};
+        answer=inputdlg(Momo,name,numlines,defaultanswer);
+        
+        %Momo = inputdlg('Введите пароль','Повторите пароль')
+            pass_id = str2num(answer{1});
+            pass = str2num(answer{2});
+            pass_rep = str2num(answer{3});
                 if pass==pass_rep
+                    warndlg(sprintf('Поздравляю! Вы зарегистрированы!'))
+                        
+                    
+                    
+                    
+                    
+                        features_data{features_size+1,2} = pass_id;
+
+                        clc;
+                        save('iris_database.dat','pass_id','data','face_number','max_class','features_data','features_size');
                     choss=1;
+                else
+                    warndlg(sprintf('Извините, пароль неверный!'))
                 end
 %-------------------
        	pause(1)
