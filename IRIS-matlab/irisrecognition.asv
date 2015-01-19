@@ -17,11 +17,19 @@ while chos~=possibility,
                warndlg('Пользователя не существует')
                break; 
             end
-                load(userdb,'pass','-mat');
+                load(userdb,'pass_id','pass','-mat');
             
 
-               if ((parol~=pass))
+               if (parol~=pass||parol~=)
                     warndlg('Неверно')
+                    cam=webcam(1);
+                    pause(1);
+                    imwrite(snapshot(cam),'lol.png');
+                    delete(cam);
+                    namefile='\lol.png';
+                    pathname=cd;
+                    [img,map]=imread(strcat(pathname,namefile));
+                    warndlg('Пока!')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
@@ -299,11 +307,10 @@ if chos==2,
                 if pass==pass_rep
 
                     userdb=[pass_id,'.dat'];
-                   if (exist(userdb)==2)
+                   if (exist(userdb)==0)
                         f = fopen(userdb, 'w'); fclose(f);
                         save(userdb,'pass_id','pass','-mat');
                    end
-                    save(userdb,'pass_id','pass','-mat')
                     warndlg(sprintf('Поздравляю! Вы зарегистрированы!'))
                     choss=1;
                 else

@@ -15,13 +15,34 @@ while chos~=possibility,
             userdb=[id,'.dat'];
             if (exist(userdb)==0)
                warndlg('Пользователя не существует')
+               pause(1);
+               allHandle = allchild(0);
+               allTag = get(allHandle, 'Tag');
+               isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+               delete(allHandle(isWarndlg));
                break; 
             end
                 load(userdb,'pass_id','pass','-mat');
             
-
-               if ((parol~=pass))
-                    warndlg('Неверно')
+                   
+                    if isempty(parol)
+                     warndlg('Требуется ввести пароль')
+                     pause(1);
+                     allHandle = allchild(0);
+                     allTag = get(allHandle, 'Tag');
+                     isWarndlg = strncmp(allTag, 'Msgbox_', 7);
+                     delete(allHandle(isWarndlg));
+                     break;
+                    elseif (parol~=pass)
+                    warndlg('Неправильный пароль')
+                    cam=webcam(1);
+                    pause(1);
+                    imwrite(snapshot(cam),'lol.png');
+                    delete(cam);
+                    namefile='\lol.png';
+                    pathname=cd;
+                    [img,map]=imread(strcat(pathname,namefile));
+                    warndlg('Пока!')
                     pause(1)
                     allHandle = allchild(0);
                     allTag = get(allHandle, 'Tag');
