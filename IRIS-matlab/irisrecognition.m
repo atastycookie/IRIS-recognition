@@ -11,7 +11,7 @@ while chos~=possibility,
         noes = inputdlg({'Введите логин' 'Введите пароль'})
         title='Войдите в систему';
             id = noes{1};
-            parol = noes{2};
+            parol = (str2num(noes{2}));
             userdb=[id,'.dat'];
             if (exist(userdb)==0)
                warndlg('Пользователя не существует')
@@ -315,8 +315,8 @@ if chos==2,
         
         %Momo = inputdlg('Введите пароль','Повторите пароль')
             pass_id = answer{1};
-            pass = answer{2};
-            pass_rep = answer{3};
+            pass = (str2num(answer{2}));
+            pass_rep = (str2num(answer{3}));
                 if pass==pass_rep
 
                     userdb=[pass_id,'.dat'];
